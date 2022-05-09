@@ -15,6 +15,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: update
+    show-sql: true
   # JSON
   jackson.date-format: yyyy-MM-dd HH:mm:ss
   # Swagger
@@ -27,3 +28,6 @@ server:
     include-stacktrace: on_param
     include-exception: false
 
+feign.compression.response.enabled: true
+feign.compression.request.enabled: true
+feign.compression.response.useGzipDecoder: true

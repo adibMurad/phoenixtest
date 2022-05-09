@@ -11,11 +11,11 @@ CREATE TABLE questions (
 
 DROP TABLE IF EXISTS tags;
 CREATE TABLE tags (
-    id INT NOT NULL,
+    id INT AUTO_INCREMENT,
     tag VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE KEY ux_tag_text (tag)
+    PRIMARY KEY (id)
 );
+CREATE UNIQUE INDEX ux_tag_text ON tags(tag)
 
 DROP TABLE IF EXISTS question_tags;
 CREATE TABLE question_tags (

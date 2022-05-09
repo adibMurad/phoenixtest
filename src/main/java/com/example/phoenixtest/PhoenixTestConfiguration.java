@@ -2,8 +2,10 @@ package com.example.phoenixtest;
 
 import com.example.phoenixtest.controller.QuestionController;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 @ComponentScan
@@ -46,9 +49,10 @@ public class PhoenixTestConfiguration {
     @Primary
     public ObjectMapper objectMapper() {
         JavaTimeModule module = new JavaTimeModule();
-        //module.addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        module.addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         return new ObjectMapper()
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .registerModule(module);
     }
 }
