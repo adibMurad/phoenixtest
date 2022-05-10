@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -20,11 +21,13 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TagEntity {
     @Id
     @GeneratedValue
     private Integer id;
     @Column
+    @EqualsAndHashCode.Include
     private String tag;
     @ManyToMany(mappedBy = "tags")
     private List<QuestionEntity> questions;

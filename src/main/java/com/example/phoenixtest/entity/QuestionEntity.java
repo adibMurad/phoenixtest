@@ -26,7 +26,7 @@ import java.util.List;
 public class QuestionEntity {
     @Id
     private Integer id;
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(
             name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),

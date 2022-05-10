@@ -2,6 +2,7 @@ package com.example.phoenixtest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Singular;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -12,7 +13,9 @@ import java.util.List;
 @Value
 @Builder()
 @Jacksonized
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Question {
+    @EqualsAndHashCode.Include
     Integer id;
     @Singular
     List<String> tags;
