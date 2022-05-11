@@ -16,18 +16,16 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: update
     show-sql: true
-  # JSON
-  jackson.date-format: yyyy-MM-dd HH:mm:ss
   # Swagger
   mvc.pathmatch.matching-strategy: ant_path_matcher
 
 server:
+  servlet:
+    context-path: /phoenix
   error:
     include-message: always
     include-binding-errors: always
     include-stacktrace: on_param
     include-exception: false
 
-feign.compression.response.enabled: true
-feign.compression.request.enabled: true
-feign.compression.response.useGzipDecoder: true
+startup.question.count: 20

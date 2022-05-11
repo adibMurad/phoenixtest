@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tags")
@@ -31,4 +32,13 @@ public class TagEntity {
     private String tag;
     @ManyToMany(mappedBy = "tags")
     private List<QuestionEntity> questions;
+
+    public String toString() {
+        return "TagEntity(id="
+                + this.getId()
+                + ", tag="
+                + this.getTag()
+                + ", questions="
+                + this.getQuestions().stream().map(QuestionEntity::getId).collect(Collectors.toList()) + ")";
+    }
 }

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class StartupService {
+    @Value("${startup.question.count}")
+    private int questionCount;
     private final QuestionsFeignClient feignClient;
     private final ObjectMapper mapper;
     private final QuestionRepository questionRepository;
@@ -37,7 +40,7 @@ public class StartupService {
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadLatestQuestions() throws IOException {
-        byte[] bytes = feignClient.getQuestions(1, 20, "creation", SortOrder.DESCENDING.toString());
+        byte[] bytes = feignClient.getQuestions(1, questionCount, "creation", SortOrder.DESCENDING.toString());
         QuestionFeignResponse feignResponse = mapper.readValue(JsonUtil.toString(bytes), QuestionFeignResponse.class);
         final Set<TagEntity> tags = tagsFromFeignResponseQuestions(feignResponse.getItems());
         tagRepository.saveAll(tags);

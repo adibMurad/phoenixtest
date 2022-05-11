@@ -1,5 +1,6 @@
 package com.example.phoenixtest.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class Question {
     @JsonProperty("answer_count")
     Integer answerCount;
     @JsonProperty("creation_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime creationDate;
     @JsonProperty("user_id")
     Integer userId;

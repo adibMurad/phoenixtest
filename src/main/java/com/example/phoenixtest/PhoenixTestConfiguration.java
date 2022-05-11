@@ -55,4 +55,5 @@ public class PhoenixTestConfiguration {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .registerModule(module);
     }
+
 }

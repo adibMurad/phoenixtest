@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "questions")
@@ -26,7 +26,7 @@ import java.util.List;
 public class QuestionEntity {
     @Id
     private Integer id;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany
     @JoinTable(
             name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),
@@ -42,4 +42,14 @@ public class QuestionEntity {
     private LocalDateTime creationDate;
     @Column(name = "user_id")
     private Integer userId;
+
+    public String toString() {
+        return "QuestionEntity(id=" + this.getId()
+                + ", tags=" + this.getTags().stream().map(TagEntity::getTag).collect(Collectors.toList())
+                + ", answered=" + this.getAnswered()
+                + ", viewCount=" + this.getViewCount()
+                + ", answerCount=" + this.getAnswerCount()
+                + ", creationDate=" + this.getCreationDate()
+                + ", userId=" + this.getUserId() + ")";
+    }
 }
