@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "49eb838d-4e93-45ee-8720-5620ff9d178c",
+		"name": "Phoenix Games",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getByTags",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/question?tag=mysql&tag=reactjs&tag=java",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"question"
+					],
+					"query": [
+						{
+							"key": "tag",
+							"value": "mysql"
+						},
+						{
+							"key": "tag",
+							"value": "reactjs"
+						},
+						{
+							"key": "tag",
+							"value": "java"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/question/72154279",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"question",
+						"72154279"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteById",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/question/72154279",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"question",
+						"72154279"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
