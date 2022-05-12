@@ -7,7 +7,8 @@ import com.example.phoenixtest.entity.TagEntity;
 import com.example.phoenixtest.model.SortOrder;
 import com.example.phoenixtest.repository.QuestionRepository;
 import com.example.phoenixtest.repository.TagRepository;
-import com.example.phoenixtest.util.JsonUtil;
+import com.example.phoenixtest.util.CompressUtil;
+import com.example.phoenixtest.util.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +19,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,12 +36,23 @@ public class StartupService {
     private final QuestionRepository questionRepository;
     private final TagRepository tagRepository;
 
+    /**
+     * Loads 20 newest (by date) featured questions from StackOverflow.com API.
+     * The result of the call is stored into the database, replacing results from previous runs.
+     *
+     * @throws IOException if an error occurs processing the response JSON.
+     */
     @EventListener(ApplicationReadyEvent.class)
     public void loadLatestQuestions() throws IOException {
+        // Get and uncompress data from Stack Overflow service:
         byte[] bytes = feignClient.getQuestions(1, questionCount, "creation", SortOrder.DESCENDING.toString());
-        QuestionFeignResponse feignResponse = mapper.readValue(JsonUtil.toString(bytes), QuestionFeignResponse.class);
+        QuestionFeignResponse feignResponse = mapper.readValue(CompressUtil.decompress(bytes), QuestionFeignResponse.class);
+
+        // Extract and persist the set of tags from Stack Overflow response:
         final Set<TagEntity> tags = tagsFromFeignResponseQuestions(feignResponse.getItems());
         tagRepository.saveAll(tags);
+
+        // Persist the questions and their references to the tags:
         final Map<String, Integer> tagMap = tags.stream().collect(Collectors.toMap(TagEntity::getTag, TagEntity::getId));
         List<QuestionEntity> questions =
                 feignResponse.getItems()
@@ -69,11 +78,7 @@ public class StartupService {
                 .answered(question.getAnswered())
                 .viewCount(question.getViewCount())
                 .answerCount(question.getAnswerCount())
-                .creationDate(
-                        Optional.ofNullable(question.getCreationDate())
-                                .map(time -> LocalDateTime.ofInstant(Instant.ofEpochSecond(time), TimeZone.getTimeZone("UTC").toZoneId()))
-                                .orElse(null)
-                )
+                .creationDate(DateUtil.fromEpochSecond(question.getCreationDate()))
                 .userId(Optional.ofNullable(question.getOwner()).map(QuestionFeignResponse.Owner::getUserId).orElse(null))
                 .build();
     }

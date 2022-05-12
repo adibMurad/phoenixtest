@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
         url = "https://api.stackexchange.com/2.3/questions/featured?site=stackoverflow"
 )
 public interface QuestionsFeignClient {
-    //page=1&pagesize=20&order=desc&sort=creation&site=stackoverflow
-
     @GetMapping(headers = "Accept-Encoding: gzip")
     byte[] getQuestions(
             @RequestParam("page") int pageNumber,

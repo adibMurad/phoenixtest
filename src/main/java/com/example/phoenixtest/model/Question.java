@@ -28,7 +28,7 @@ public class Question {
     @JsonProperty("answer_count")
     Integer answerCount;
     @JsonProperty("creation_date")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime creationDate;
     @JsonProperty("user_id")
     Integer userId;

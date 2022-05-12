@@ -33,7 +33,7 @@ public class QuestionEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<TagEntity> tags;
     @Column(name = "is_answered")
-    private Boolean answered = false;
+    private Boolean answered;
     @Column(name = "view_count")
     private Integer viewCount;
     @Column(name = "answer_count")

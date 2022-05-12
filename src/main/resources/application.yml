@@ -15,7 +15,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: update
-    show-sql: true
+    show-sql: false
   # Swagger
   mvc.pathmatch.matching-strategy: ant_path_matcher
 
@@ -29,3 +29,4 @@ server:
     include-exception: false
 
 startup.question.count: 20
+
