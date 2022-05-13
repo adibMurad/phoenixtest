@@ -3,7 +3,7 @@ package com.example.phoenixtest.entity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -15,11 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "questions")
-@Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -42,14 +41,4 @@ public class QuestionEntity {
     private LocalDateTime creationDate;
     @Column(name = "user_id")
     private Integer userId;
-
-    public String toString() {
-        return "QuestionEntity(id=" + this.getId()
-                + ", tags=" + this.getTags().stream().map(TagEntity::getTag).collect(Collectors.toList())
-                + ", answered=" + this.getAnswered()
-                + ", viewCount=" + this.getViewCount()
-                + ", answerCount=" + this.getAnswerCount()
-                + ", creationDate=" + this.getCreationDate()
-                + ", userId=" + this.getUserId() + ")";
-    }
 }

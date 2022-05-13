@@ -50,13 +50,13 @@ public class QuestionController {
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Question data."),
-            @ApiResponse(code = 204, message = "Question id wasn't found."),
+            @ApiResponse(code = 404, message = "Question id wasn't found."),
             @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged and is being investigated.")})
     @GetMapping("/{id}")
     public ResponseEntity<Question> getById(@PathVariable Integer id) {
         Question question = questionService.findById(id);
         return question == null
-                ? ResponseEntity.noContent().build()
+                ? ResponseEntity.notFound().build()
                 : ResponseEntity.ok(question);
     }
 
@@ -67,13 +67,13 @@ public class QuestionController {
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Question successfully deleted."),
-            @ApiResponse(code = 204, message = "Question id wasn't found."),
+            @ApiResponse(code = 404, message = "Question id wasn't found."),
             @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged and is being investigated.")})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
         Question question = questionService.delete(id);
         return question == null
-                ? ResponseEntity.noContent().build()
+                ? ResponseEntity.notFound().build()
                 : ResponseEntity.ok().build();
     }
 

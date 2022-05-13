@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,10 +50,12 @@ public class QuestionService {
         return question;
     }
 
-    private static Question fromQuestionEntity(QuestionEntity questionEntity) {
+    static Question fromQuestionEntity(QuestionEntity questionEntity) {
         return Question.builder()
                 .id(questionEntity.getId())
-                .tags(questionEntity.getTags().stream().map(TagEntity::getTag).collect(Collectors.toList()))
+                .tags(Optional.ofNullable(questionEntity.getTags())
+                        .map(tags -> questionEntity.getTags().stream().map(TagEntity::getTag).collect(Collectors.toList()))
+                        .orElse(Collections.emptyList()))
                 .answered(questionEntity.getAnswered())
                 .viewCount(questionEntity.getViewCount())
                 .answerCount(questionEntity.getAnswerCount())
