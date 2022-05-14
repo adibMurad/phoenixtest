@@ -6,7 +6,147 @@
 	},
 	"item": [
 		{
-			"name": "getByTags",
+			"name": "Get all questions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test('Questions retrieved' + jsonData.length + ' (should be 20)', function () {\r",
+							"    pm.expect(jsonData.length).to.equal(20);\r",
+							"});\r",
+							"\r",
+							"pm.test('Got question id', function() {\r",
+							"    pm.expect(jsonData[0]).to.have.property('id')\r",
+							"    pm.globals.set(\"questionId\", jsonData[0].id);\r",
+							"});\r",
+							"\r",
+							"pm.test('Got user id', function() {\r",
+							"    pm.expect(jsonData[0]).to.have.property('user_id')\r",
+							"    pm.globals.set(\"userId\", jsonData[0].user_id);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/question",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"question"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get no questions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204)\r",
+							"});\r",
+							"\r",
+							"pm.test('Empty body', function () {\r",
+							"    pm.expect(pm.response.body).undefined;\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/question?tag=fjdslakjfdklsajfkldsjalkfdjsalkfjdsklafjdklsaf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"question"
+					],
+					"query": [
+						{
+							"key": "tag",
+							"value": "fjdslakjfdklsajfkldsjalkfdjsalkfjdsklafjdklsaf"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get questions by any tag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test('Questions retrieved: ' + jsonData.length, function () {\r",
+							"    pm.expect(jsonData.length).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test('Got question id', function() {\r",
+							"    pm.expect(jsonData[0]).to.have.property('id')\r",
+							"    pm.globals.set(\"questionId\", jsonData[0].id);\r",
+							"});\r",
+							"\r",
+							"pm.test('Got user id', function() {\r",
+							"    pm.expect(jsonData[0]).to.have.property('user_id')\r",
+							"    pm.globals.set(\"userId\", jsonData[0].user_id);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
@@ -47,7 +187,33 @@
 			"response": []
 		},
 		{
-			"name": "getById",
+			"name": "Get question by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test('Got question id', function() {\r",
+							"    pm.expect(jsonData).to.have.property('id')\r",
+							"    pm.globals.set(\"questionId\", jsonData.id);\r",
+							"});\r",
+							"\r",
+							"pm.test('Got user id', function() {\r",
+							"    pm.expect(jsonData).to.have.property('user_id')\r",
+							"    pm.globals.set(\"userId\", jsonData.user_id);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
@@ -58,7 +224,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/phoenix/question/72154279",
+					"raw": "http://localhost:8080/phoenix/question/{{questionId}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -67,14 +233,166 @@
 					"path": [
 						"phoenix",
 						"question",
-						"72154279"
+						"{{questionId}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "deleteById",
+			"name": "Get no question by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404)\r",
+							"});\r",
+							"\r",
+							"pm.test('Empty body', function () {\r",
+							"    pm.expect(pm.response.body).undefined;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/question/-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"question",
+						"-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test('User has all properties', function() {\r",
+							"    pm.expect(jsonData).to.have.property('user_id')\r",
+							"    pm.expect(jsonData).to.have.property('creation_date')\r",
+							"    pm.expect(jsonData).to.have.property('display_name')\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get no user by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404)\r",
+							"});\r",
+							"\r",
+							"pm.test('Empty body', function () {\r",
+							"    pm.expect(pm.response.body).undefined;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/user/-2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"user",
+						"-2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete question by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -85,7 +403,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/phoenix/question/72154279",
+					"raw": "http://localhost:8080/phoenix/question/{{questionId}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -94,7 +412,47 @@
 					"path": [
 						"phoenix",
 						"question",
-						"72154279"
+						"{{questionId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete no question by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/phoenix/question/-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"phoenix",
+						"question",
+						"-1"
 					]
 				}
 			},

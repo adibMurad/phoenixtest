@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserDetailsService {
     private static final String PARAM_SITE = "stackoverflow";
-    private static final String MSG_ERROR_PROCESSING_JSON = "Error processing user details data.";
+    private static final String MSG_ERROR_PROCESSING_JSON = "Error processing user details JSON data.";
 
     private final UserDetailsFeignClient feignClient;
     private final ObjectMapper mapper;
