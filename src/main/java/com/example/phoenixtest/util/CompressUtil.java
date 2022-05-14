@@ -3,6 +3,7 @@ package com.example.phoenixtest.util;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.util.Arrays;
 import org.springframework.web.server.ServerErrorException;
 
 import java.io.ByteArrayInputStream;
@@ -20,6 +21,9 @@ public class CompressUtil {
     private static final String ERROR_MSG_COMPRESSING = "Error compressing %s";
 
     public static String decompress(byte[] compressed) {
+        if (Arrays.isNullOrEmpty(compressed)) {
+            return null;
+        }
         try (InputStream byteStream = new ByteArrayInputStream(compressed);
              GZIPInputStream gzipStream = new GZIPInputStream(byteStream)) {
             return new String(gzipStream.readAllBytes());
@@ -30,6 +34,9 @@ public class CompressUtil {
     }
 
     public static byte[] compress(String json) {
+        if (json == null) {
+            return null;
+        }
         try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream()) {
             try (GZIPOutputStream gzipStream = new GZIPOutputStream(byteStream)) {
                 gzipStream.write(json.getBytes(StandardCharsets.UTF_8));

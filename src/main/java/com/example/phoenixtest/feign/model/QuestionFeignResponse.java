@@ -1,21 +1,28 @@
-package com.example.phoenixtest.client;
+package com.example.phoenixtest.feign.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Singular;
-import lombok.Value;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
 
-@Value
+@Getter
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Builder
 @Jacksonized
 public class QuestionFeignResponse {
     List<Question> items;
 
-    @Value
+    @Getter
+    @AllArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
     @Builder()
     @Jacksonized
     public static class Question {
@@ -35,7 +42,9 @@ public class QuestionFeignResponse {
         Owner owner;
     }
 
-    @Value
+    @Getter
+    @AllArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
     @Builder()
     @Jacksonized
     public static class Owner {

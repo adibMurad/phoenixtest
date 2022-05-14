@@ -27,10 +27,3 @@ CREATE TABLE question_tags (
 ALTER TABLE question_tags ADD FOREIGN KEY (question_id) REFERENCES questions(id);
 ALTER TABLE question_tags ADD FOREIGN KEY (tag_id) REFERENCES tags(id);
 
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
-    user_id INT NOT NULL,
-    creation_date TIMESTAMP NOT NULL,
-    display_name VARCHAR(1000) NOT NULL,
-    PRIMARY KEY (user_id)
-);

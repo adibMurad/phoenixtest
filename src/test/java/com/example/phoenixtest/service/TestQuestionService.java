@@ -1,10 +1,10 @@
 package com.example.phoenixtest.service;
 
-import com.example.phoenixtest.entity.QuestionEntity;
-import com.example.phoenixtest.entity.TagEntity;
+import com.example.phoenixtest.db.entity.QuestionEntity;
+import com.example.phoenixtest.db.entity.TagEntity;
+import com.example.phoenixtest.db.repository.QuestionRepository;
+import com.example.phoenixtest.db.repository.TagRepository;
 import com.example.phoenixtest.model.Question;
-import com.example.phoenixtest.repository.QuestionRepository;
-import com.example.phoenixtest.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -134,14 +135,13 @@ class TestQuestionService {
         when(questionRepository.findById(idFound)).thenReturn(Optional.of(testEntity));
 
         // WHEN
-        Question actualFound = questionService.delete(idFound);
-        Question actualNotFound = questionService.delete(2);
+        boolean actualFound = questionService.delete(idFound);
+        boolean actualNotFound = questionService.delete(2);
 
         // THEN
         verify(questionRepository, times(1)).deleteById(anyInt());
-        assertNull(actualNotFound);
-        assertNotNull(actualFound);
-        assertEqualsQuestion(actualFound);
+        assertFalse(actualNotFound);
+        assertTrue(actualFound);
     }
 
     private void assertEqualsQuestion(Question actual) {

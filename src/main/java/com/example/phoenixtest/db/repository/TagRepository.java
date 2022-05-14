@@ -1,6 +1,6 @@
-package com.example.phoenixtest.repository;
+package com.example.phoenixtest.db.repository;
 
-import com.example.phoenixtest.entity.TagEntity;
+import com.example.phoenixtest.db.entity.TagEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

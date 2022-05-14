@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class UserDetails {
     @EqualsAndHashCode.Include
     @JsonProperty("user_id")
-    Integer userId;
+    private Integer userId;
     @JsonProperty("creation_date")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    LocalDateTime creationDate;
+    private LocalDateTime creationDate;
     @JsonProperty("display_name")
-    String displayName;
+    private String displayName;
 }

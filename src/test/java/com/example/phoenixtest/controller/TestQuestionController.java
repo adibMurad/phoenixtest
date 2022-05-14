@@ -114,9 +114,8 @@ class TestQuestionController {
         // GIVEN
         final Integer idExists = 1;
         final Integer idNotFound = 2;
-        final Question testQuestion = Question.builder().build();
 
-        when(questionService.delete(idExists)).thenReturn(testQuestion);
+        when(questionService.delete(idExists)).thenReturn(true);
 
         // WHEN
         ResponseEntity<Void> actualExisting = questionController.deleteById(idExists);

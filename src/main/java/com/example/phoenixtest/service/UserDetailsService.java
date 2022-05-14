@@ -1,7 +1,7 @@
 package com.example.phoenixtest.service;
 
-import com.example.phoenixtest.client.UserDetailsFeignClient;
-import com.example.phoenixtest.client.UserDetailsFeignResponse;
+import com.example.phoenixtest.feign.client.UserDetailsFeignClient;
+import com.example.phoenixtest.feign.model.UserDetailsFeignResponse;
 import com.example.phoenixtest.model.UserDetails;
 import com.example.phoenixtest.util.CompressUtil;
 import com.example.phoenixtest.util.DateUtil;
@@ -12,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ServerErrorException;
 
-import javax.ws.rs.WebApplicationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +22,12 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserDetailsService {
     private static final String PARAM_SITE = "stackoverflow";
+    private static final String MSG_ERROR_PROCESSING_JSON = "Error processing user details data.";
 
     private final UserDetailsFeignClient feignClient;
     private final ObjectMapper mapper;
 
-    @Cacheable(value = "userDetailsCache", key = "#id")
+    @Cacheable(value = "userDetailsCache", key = "#id", unless = "#result == null")
     public UserDetails findById(Integer id) {
         log.info("User details cache refreshed.");
         try {
@@ -41,8 +42,8 @@ public class UserDetailsService {
                             .map(UserDetailsService::fromFeignResponseUserDetails))
                     .orElse(null);
         } catch (JsonProcessingException e) {
-            log.error("Error processing user details data.", e);
-            throw new WebApplicationException(e);
+            log.error(MSG_ERROR_PROCESSING_JSON, e);
+            throw new ServerErrorException(MSG_ERROR_PROCESSING_JSON, e);
         }
     }
 

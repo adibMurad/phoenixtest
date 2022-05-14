@@ -30,8 +30,9 @@ public class TestUserDetailsController {
     @InjectMocks
     private UserDetailsController userDetailsController;
 
+    @DisplayName("Test get by id")
     @Test
-    public void getById() {
+    public void testGetById() {
         // GIVEN
         final int idFound = 1;
         final UserDetails testUserDetails = UserDetails.of(1, LocalDateTime.now(), "name");
@@ -39,7 +40,7 @@ public class TestUserDetailsController {
 
         // WHEN
         ResponseEntity<UserDetails> actualFound = userDetailsController.getById(idFound);
-        ResponseEntity<UserDetails> actualNotFound = userDetailsController.getById(999);
+        ResponseEntity<UserDetails> actualNotFound = userDetailsController.getById(2);
 
         // THEN
         verify(userDetailsService, times(2)).findById(anyInt());

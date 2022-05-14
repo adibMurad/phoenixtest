@@ -1,4 +1,4 @@
-package com.example.phoenixtest.entity;
+package com.example.phoenixtest.db.entity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -28,5 +28,15 @@ server:
     include-stacktrace: on_param
     include-exception: false
 
+feign:
+  user-details:
+    name: userDetails
+    url: https://api.stackexchange.com/2.3/users
+  question:
+    name: question
+    url: https://api.stackexchange.com/2.3/questions/featured?site=stackoverflow
+  client.config:
+    userDetails.errorDecoder: com.example.phoenixtest.feign.exception.UserDetailsErrorDecoder
+
 startup.question.count: 20
 

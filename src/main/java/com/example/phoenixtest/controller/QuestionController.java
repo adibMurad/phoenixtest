@@ -71,10 +71,9 @@ public class QuestionController {
             @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged and is being investigated.")})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
-        Question question = questionService.delete(id);
-        return question == null
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok().build();
+        return questionService.delete(id)
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
     }
 
 }
